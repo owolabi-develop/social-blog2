@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+{% if error %}
+<p>{{error}}</p>
+{% endif %}
+    <form>
+        {% csrf_token %}
+        <input type="search" name="query"  placeholder="Search" id="query">
+    </form>
+    <div class="articledata">
+    {% if Article %}
+    {% for Article in Article  %}
+    <p>{{Article.headlines}}-{{Article.body}}</p>
+    {% endfor %}
+    {% endif %}
+    <img src="" id="imgh">
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#query").keyup(function(e){
+        e.preventDefault()
+        var query = $(this).val()
+        $.ajax({
+            type:'GET',
+            url:"{% url 'blog:search' %}",
+            data:{'query':query},
+            dataType:'json',
+            contentType: 'multipart/form-data',
+            success:function(response){
+                console.log(response['data'])   
+
+            },
+            error:function(response){
+                $(".articledata").html(response['Notfound'])
+                
+
+            }
+        })
+
+    });
+});
+</script>
+</body>
+</html>

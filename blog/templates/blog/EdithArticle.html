@@ -1,0 +1,126 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <script src="https://kit.fontawesome.com/18de66c05e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+    <script src="{% static 'blog/main.js' %}"></script>
+</head>
+<body>
+ <!--main menu-->
+ <div class="menubar">
+    <a href="{% url 'blog:index' %}"><i class="fa-solid fa-house">&nbsp;</i>Home</a>
+    {% if category %}
+    {% for categorys in category %}
+    <a href="{% url 'blog:article-category' categorys.Title %}">{{categorys.Title|title}}</a>
+    {% endfor %}
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+    <a href="{% url 'blog:Profile' user.email %}">Acount</a>
+    {% else %}
+    <a href="{% url 'blog:SignUp' %}">Sign Up</a>
+    {% endif %}
+
+    <li>
+        <form>
+            {% csrf_token %}
+            <input type="search" name="query"  placeholder="Search Article....." id="query">
+        </form>
+    </li>
+</div>
+
+<!--main menu-->
+
+<!---profile-->
+<div class="profil-wrapper">
+    {% block profile-wrapper %}
+<div class="row">
+    <div class="col profile-menu">
+        <img src="{{user.profile.Profile_pic.url}}">
+        <p style="margin-left:70px;">{{user.username|title}}</p>
+<hr class="ArtHlatest">
+<ul>
+    <li><i class="fa-solid fa-user">&nbsp;&nbsp;&nbsp;&nbsp;</i><a href="{% url 'blog:Profile' user.email %}">Public Profile</a></li>
+    <li><i class="fa-solid fa-gear"></i>&nbsp;&nbsp;&nbsp;<a href="{% url 'blog:aaccount-Management' user.email %}">Personal Information</a></li>
+    <li><i class="fa-solid fa-newspaper">&nbsp;&nbsp;&nbsp;&nbsp;</i><a href="{% url 'blog:Article-Management' user.email %}">Article Management</a></li>
+    <li><i class="fa-solid fa-bars"></i>&nbsp;&nbsp;&nbsp;<a href="">Account Management</a></li>
+    <li><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'blog:logout' %}">Logout</a></li>
+</ul>
+    </div>
+    <div class="col profile-Forms">
+       <div class="Article-container">
+      <form action="{% url 'blog:Article-Edit' article.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% csrf_token %}
+        {{form.none_field_errors}}
+        {% for field in form  %}
+        
+        {{field}}
+        {{field.errors}}
+        <br/>
+        <br/>
+        {% endfor %}
+        <input type="submit" value="Update Article">
+      </form>
+   
+       </div>
+    </div>
+</div>
+{% endblock profile-wrapper %}
+</div>
+<!---profile-->
+
+
+
+
+<!--footer-->
+<div class="footer"> 
+<div class="row">
+    <div class="col f-logo">
+        <p style="font-style: oblique;font-weight:bold; font-size:25px;">Don't Miss Out</p>
+        <p>Sign up for the latest More News</p>
+        <form action="" method="post">
+            <input type="email" name="" id="" placeholder="E-mail Address">
+            <input type="submit" value="Subscribe">
+        </form>
+        <div class="myLinks">
+            <i class="fa-brands fa-facebook-square"></i>
+            <i class="fa-brands fa-youtube"></i>
+            <i class="fa-brands fa-whatsapp"></i>
+            <i class="fa-brands fa-github"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+        </div>
+    </div>
+    <div class="col f-Company">
+        <p style="font-style: oblique;font-weight:bold">Company</p>
+        <p>DevelopWithOwolabi.com</p>
+    </div>
+    <div class="col f-Contact">
+        <p style="font-style: oblique;font-weight:bold">Contact Me</p>
+        <p>Owolabidevelop@gmail.com</p>
+        <p>+2348120385367</p>
+    </div>
+
+    <div class="col f-service">
+        <p style="font-style: oblique;font-weight:bold">Our Service</p>
+        <p>Web Developement</p>
+        <p>Advertisement</p>
+        <p>Blog</p>
+    </div>
+</div>
+<div class="f-content">
+    <p style="text-align: center; padding:2px">Develop by Owolabi Akintan CopyRight Reserved 2022</p>
+</div>
+
+</div>
+<!--footer-->
+
+</body>
+</html>

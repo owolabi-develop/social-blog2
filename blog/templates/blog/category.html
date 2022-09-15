@@ -1,0 +1,262 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owolabi Blog</title>
+    <script src="https://kit.fontawesome.com/18de66c05e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <!--main menu-->
+<!--main menu-->
+<div class="menubar">
+    <a href="{% url 'blog:index' %}"><i class="fa-solid fa-house">&nbsp;</i>Home</a>
+    {% if category %}
+    {% for categorys in category %}
+    <a href="{% url 'blog:article-category' categorys.Title %}">{{categorys.Title|title}}</a>
+    {% endfor %}
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+    <a href="{% url 'blog:Profile' user.email %}">Acount</a>
+    {% else %}
+    <a href="{% url 'blog:SignUp' %}">Sign Up</a>
+    {% endif %}
+
+    <li>
+        <form>
+            {% csrf_token %}
+            <input type="search" name="query"  placeholder="Search Article....." id="query">
+        </form>
+    </li>
+</div>
+
+<!--main menu-->
+
+
+<!--Articlewrappet-->
+<div class="Article-wrapper">
+    <!--- Article -->
+<div id="Article">
+
+<div class="row">
+    <!--headkines-->
+    <div class="col headlines">
+        <!--headline row-->
+        <div class="row">
+
+        <!--headline-sub-right-->
+        
+        <div class="col headline-sub-right">
+           
+        </div>
+        <!--headline-sub-right-->
+        <!--headline-sub-left-->
+        <div class="col headline-sub-left">
+           
+        </div>
+       
+        <!--headline-sub-left-->
+       
+    </div>
+    <!--headline in row-->
+    <!--latest-->
+    <p style="padding-left: 30px;">Latest Article</p>
+    
+    {% if categorylist %}
+    {% for categorylists in categorylist %}
+    <div class="col latest">
+        <span><img src="{{categorylists.Article_pic.url}}" width="100" height="140" id="img">
+            <br>
+           <span style="padding: 20px; font-weight:bold;font-size:18px;"> <a href="{% url 'blog:details' categorylists.headlines  %}">{{categorylists.headlines|title}}</a></span>
+        <br>
+        <br>
+        <span><img src="{{categorylists.author.profile.Profile_pic.url}}" width="100" height="140" id="Auth-profile"></span>
+        <br>
+        <br>
+           {{categorylists.body}}
+            <br>
+            <br>
+          
+            <span>Comments {{categorylists.comment_set.all.count}}</span> | Posted: &nbsp;&nbsp;<span>{{categorylists.pub_date|naturaltime|title}}</span>
+            </span>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h3>No Article Yet </h3>
+    {% endif %}
+    <!--latest-->
+    
+    
+    </div>
+    <!--headkines-->
+
+    <!--recentpost-->
+    <div class="col recentpost">
+        <!---post wrapper-->
+        <div class="post-wrpper">
+        <p>Recent Post</p>
+       {% if recent3 %}
+        {% for recent3 in recent3  %}
+        <div class="R-post">
+            <img src="{{recent3.Article_pic.url}}">
+            <span style="padding: 20px; font-weight:bold;font-size:18px;"><a href="{% url 'blog:details' recent3.headlines  %}">{{recent3.headlines|title}}</a></span>
+            <br/>
+            <p>Posted: &nbsp;&nbsp;{{recent3.pub_date|naturaltime|title}}</p>
+        </div>
+     
+        {% endfor %}
+        {% else %}
+        <p>No article publish yet</p>
+        {% endif %}
+       
+    </div>
+  <!---post wrapper-->
+    
+    </div>
+    <!--recentpost-->
+   
+
+
+</div>
+
+</div>
+<!--Article-->
+<div class="pagination-wrapper">
+    <div class="pagination">
+        {% if categorylist.has_previous  %}
+        <a href="?page={{categorylist.previous_page_number}}">&nbsp;&laquo;</a>
+        {% endif %}
+        {% for range in categorylist.paginator.page_range %}
+        <a href="?page={{range}}">{{range}}</a>
+        {% endfor %}
+        
+        {% if categorylist.has_next  %}
+        <a href="?page={{ categorylist.next_page_number}}">&nbsp;&raquo;</a>
+        <a href="?page={{ categorylist.paginator.num_pages }}">last&nbsp; &raquo;</a>
+        {% endif %}
+      </div>
+
+</div>
+<!--Articlewrappet-->
+
+
+<!--footer-->
+<div class="footer"> 
+<div class="row">
+    <div class="col f-logo">
+        <p style="font-style: oblique;font-weight:bold; font-size:25px;">Don't Miss Out</p>
+        <p>Sign up for the latest More News</p>
+        <form action="" method="post">
+            <input type="email" name="" id="" placeholder="E-mail Address">
+            <input type="submit" value="Subscribe">
+        </form>
+        <div class="myLinks">
+            <i class="fa-brands fa-facebook-square"></i>
+            <i class="fa-brands fa-youtube"></i>
+            <i class="fa-brands fa-whatsapp"></i>
+            <i class="fa-brands fa-github"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+        </div>
+    </div>
+    <div class="col f-Company">
+        <p style="font-style: oblique;font-weight:bold">Company</p>
+        <p>DevelopWithOwolabi.com</p>
+    </div>
+    <div class="col f-Contact">
+        <p style="font-style: oblique;font-weight:bold">Contact Me</p>
+        <p>Owolabidevelop@gmail.com</p>
+        <p>+2348120385367</p>
+    </div>
+
+    <div class="col f-service">
+        <p style="font-style: oblique;font-weight:bold">Our Service</p>
+        <p>Web Developement</p>
+        <p>Advertisement</p>
+        <p>Blog</p>
+    </div>
+</div>
+<div class="f-content">
+    <p style="text-align: center; padding:2px">Develop by Owolabi Akintan CopyRight Reserved 2022</p>
+</div>
+
+</div>
+<!--footer-->
+<script>
+    var csrf = document.getElementsByName('csrfmiddlewaretoken')[0].values
+    var latest = $(".latest")
+    var latest2 = document.querySelector('.latest')
+    $(document).ready(function(){
+        $("#query").keyup(function(e){
+            latest.empty()
+          
+            latest.toggleClass('latests')
+            e.preventDefault()
+            var query = $(this).val()
+            $.ajax({
+                type:"GET",
+                url:"{% url 'blog:article-category' categorylist1.Title %}",
+                dataType:"json",
+                data:{'csrfmiddlewaretoken':csrf,'query':query},
+                success:function(response){
+                    var url ="/Details/"
+                    var result = response['data'] 
+                    console.log(result)
+                    txt= "";
+                    if(Array.isArray(result)){
+                        for (let index = 0; index < result.length; index++) {
+                            const Article = result[index];
+                            txt += `<div class="ajaxArticle">
+                        <span><img src="${Article.Article_pic}" width="100" height="120" id="img">
+            <br>
+           <span style="padding: 20px; font-weight:bold;font-size:18px;"> <a href="/Details/${Article.headlines}">${Article.headlines}</a></span>
+        <br>
+        <br>
+        <span><img src="{{earliest.author.profile.Profile_pic.url}}" width="100" height="140" id="Auth-profile"></span>
+        <br>
+        <br>
+           ${Article.body}
+            <br/>
+            <br/>
+           
+            <span>Comments {{earliest.comment_set.all.count}}</span> | Posted: &nbsp;&nbsp;<span>${Article.pub_date}</span>
+            </span>
+            <br/>
+            <p></p>
+            </div>
+                       
+                        `  
+                        };
+                    }else{
+                        txt= `
+                            <p align="center">${result}</p>
+                            `  
+                    }
+                    latest2.innerHTML=txt;
+    
+                },
+                error:function(response){
+                    alert("failed")
+    
+                }
+            });
+    
+    
+    
+    
+    
+    
+            
+        });
+    });
+    
+    
+    </script>
+</body>
+</html>
