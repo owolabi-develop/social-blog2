@@ -214,7 +214,7 @@ def forgotPassword(request):
     else:
         form = UserPasswordResetForm()
 
-    return render(request,"blog/forgetpassword.html",{"form":form})
+    return render(request,"blog/forgetPassword.html",{"form":form})
 
 def User_logOut(request):
     logout(request)
