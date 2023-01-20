@@ -136,7 +136,7 @@ STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/'
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
 #MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-STATICFILES_DIRS = (BASE_DIR / 'static',)
+#STATICFILES_DIRS = (BASE_DIR / 'static',)
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
