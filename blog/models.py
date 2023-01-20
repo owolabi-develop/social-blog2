@@ -75,7 +75,7 @@ class Profile(models.Model):
         ("Female","Female")
     )
     User = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    Profile_pic = models.FileField("Profile Pic",upload_to='uploads/',default='uploads/default.png',validators=[FileExtensionValidator(allowed_extensions=['jpg','png'],message='Please Upload The Fellowing Image Format jpg ord png')])
+    Profile_pic = models.FileField("Profile Pic",upload_to='uploads/',default='mediafiles/uploads/default.png',validators=[FileExtensionValidator(allowed_extensions=['jpg','png'],message='Please Upload The Fellowing Image Format jpg ord png')])
     bio = models.TextField(verbose_name='bio',max_length=255,blank=True,null=True)
     Gender = models.CharField(max_length=10,choices=sex,blank=True,null=True)
 

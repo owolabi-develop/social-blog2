@@ -39,34 +39,33 @@ post_save.connect(post_save_Profile, sender=settings.AUTH_USER_MODEL)
         
 
 def index(request):
-    try:
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        if is_ajax:
-            query = request.GET.get('query',None)
-            Articledata = Article.objects.filter(Q(headlines__icontains=query)|Q(body__icontains=query))
-            user = User.objects.filter(article__headlines__icontains=Articledata)
-        
-            if len(query) > 0 and len(Articledata) > 0:
-                data = []
-            
-                for query in Articledata:
-                    item = {
-                        'id':query.id,
-                        'headlines':query.headlines,
-                        'body':query.body,
-                        'Article_pic':query.Article_pic.url,
-                        'pub_date':query.pub_date,
-                        'author':query.author_id,
-                    }
-                    data.append(item)
-                result = data
-                category = Article_Category.objects.all()
-            else:
-                result = "No Article Found"
-            return JsonResponse({'data':result})
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        query = request.GET.get('query',None)
+        Articledata = Article.objects.filter(Q(headlines__icontains=query)|Q(body__icontains=query))
+        user = User.objects.filter(article__headlines__icontains=Articledata)
+       
+        if len(query) > 0 and len(Articledata) > 0:
+            data = []
+           
+            for query in Articledata:
+                item = {
+                    'id':query.id,
+                    'headlines':query.headlines,
+                    'body':query.body,
+                    'Article_pic':query.Article_pic.url,
+                    'pub_date':query.pub_date,
+                    'author':query.author_id,
+                }
+                data.append(item)
+            result = data
+            category = Article_Category.objects.all()
+        else:
+            result = "No Article Found"
+        return JsonResponse({'data':result})
                 
 
-    
+    try:
         category = Article_Category.objects.all()
         recentArt = Article.objects.earliest('pub_date')
         allArtticle  = Article.objects.all()
