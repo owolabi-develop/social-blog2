@@ -123,20 +123,28 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_ENDPOINT_URL = 'https://social-blog.fra1.digitaloceanspaces.com'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-AWS_STORAGE_BUCKET_NAME ='social-blog'
 
-#STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-PUBLIC_MEDIA_LOCATION = 'media'
-MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
-DEFAULT_FILE_STORAGE = 'blog.my_asw_storage.MediaStorage'
+AWS_STORAGE_BUCKET_NAME = 'social-blogers'
 
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-#MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-#STATICFILES_DIRS = (BASE_DIR / 'static',)
+AWS_S3_ENDPOINT_URL = 'https://social-blogers.nyc3.digitaloceanspaces.com'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_DEFAULT_ACL = 'public-read'
+
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, 'staticfiles')
+
+MEDIA_URL =  'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, 'mediafiles')
+
+STATICFILES_STORAGE =  'custom_storages.StaticStorage'
+
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
