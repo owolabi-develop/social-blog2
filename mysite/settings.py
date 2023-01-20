@@ -9,20 +9,15 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 import os
 import sys
 import dj_database_url
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
@@ -42,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'storages',
     'django.contrib.humanize',
 ]
 
@@ -132,16 +128,21 @@ USE_TZ = True
 AUTH_USER_MODEL = 'blog.User'
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME ='developer-news-porter'
+DEFAULT_FILE_STORAGE = 'blog.my_asw_storage.MediaStorage'
+STATICFILES_STORAGE = 'blog.my_asw_storage.StaticStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_USER =os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
