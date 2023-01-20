@@ -131,8 +131,7 @@ DEFAULT_FILE_STORAGE = 'blog.my_asw_storage.MediaStorage'
 STATICFILES_STORAGE = 'blog.my_asw_storage.StaticStorage'
 AWS_LOCATION = 'static'
 STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/'
-
-#STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
 #MEDIA_ROOT = os.path.join(BASE_DIR,'media')
