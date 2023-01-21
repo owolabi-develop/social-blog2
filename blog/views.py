@@ -73,7 +73,7 @@ def index(request):
         page_number = request.GET.get('page')
         allArt = paginator.get_page(page_number)
         recentArt2 = Article.objects.order_by('headlines')[:2]
-        recentArt3 = Article.objects.order_by('-last_modified')[:6]
+        recentArt3 = Article.objects.order_by('-last_modified')[:5]
     except Article.DoesNotExist:
         return {}
     return render(request,'blog/index.html',
